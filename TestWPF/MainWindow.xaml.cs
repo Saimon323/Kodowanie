@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TestWPF.Models;
-using System.IO;
 
 namespace TestWPF
 {
@@ -86,7 +75,7 @@ namespace TestWPF
 
             foreach (var statistic in statisticList)
             {
-                result += "Znak: " + statistic.Character + " Czestotliwosc: " + statistic.FrequencyAppearInText + " Ilosc wystapien: " + statistic.AppearInTextCounter + "\n";
+                result += "Znak: " + statistic.Character + " Czestotliwosc: " + Math.Round(statistic.FrequencyAppearInText,3) + " Ilosc wystapien: " + statistic.AppearInTextCounter + "\n";
             }
 
             result += "\nEntropia: " + entropiaResult;
@@ -135,17 +124,21 @@ namespace TestWPF
 
             foreach (var statistic in statisticList)
             {
-               result += "Znak: " + statistic.Character + " Czestotliwosc: " + statistic.FrequencyAppearInText + " Ilosc wystapien: " + statistic.AppearInTextCounter + "\n";
+                result += "Znak: " + statistic.Character + ", Czestotliwość: " + Math.Round(statistic.FrequencyAppearInText, 3) + ", Ilość wystąpień: " + statistic.AppearInTextCounter + "\n";
             }
 
             result += "\nEntropia: " + entropiaResult;
+
+            result += "\nSuma prawodpodbieństwa * ilość występowania: " + Math.Round(SumprawdXIloscWyst(statisticList),3);
+
+            result += "\nIlość znaków w tekscie: " + statisticList.Sum(x => x.AppearInTextCounter);
 
             statisticBox.Text = result;
         }
 
         private double Entropia(List<StatisticModel> list)
         {
-            double result = 0;
+            double result = 0.0;
 
             foreach (var element in list)
             {
@@ -195,7 +188,7 @@ namespace TestWPF
                 {
                     Character = dict.Key,
                     AppearInTextCounter = dict.Value,
-                    FrequencyAppearInText = Math.Round(frequency, 3)
+                    FrequencyAppearInText = frequency
                 };
                 statisticList.Add(statistic);                
             }
@@ -210,11 +203,21 @@ namespace TestWPF
             return result;
         }
 
-        
-        // dodać liczbę bitów porzebnych do zakodowania jednego znaku i dodać suma prawdopodobieństw * ilość wystąpień każdego z osobna
-        //wybrać 2 dowolne programy kompresujące, wybrać 3 pliki tekstowe bez polskich znaków (mały (pojedyncze litery), średniej wielkości (kB) i duży), wyznaczyć statystyki
-        //skompresować pliki wybranymi programami i porównać te kompresje z sytuacją idealną wynikającą z entropii
+        private double SumprawdXIloscWyst(List<StatisticModel> list)
+        {
+            double sum = 0;
 
-        //wstawić to na gita i pobrać Visio
+            foreach (var element in list)
+            {
+                sum += (element.FrequencyAppearInText*element.AppearInTextCounter);
+            }
+
+            return sum;
+        }
+
+        
+        // dodać liczbę bitów porzebnych do zakodowania jednego znaku i dodać suma (prawdopodobieństw * ilość wystąpień każdego z osobna)
+        // wybrać 2 dowolne programy kompresujące, wybrać 3 pliki tekstowe bez polskich znaków (mały (pojedyncze litery), średniej wielkości (kB) i duży), wyznaczyć statystyki
+        // skompresować pliki wybranymi programami i porównać te kompresje z sytuacją idealną wynikającą z entropii
     }
 }

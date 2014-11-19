@@ -24,7 +24,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <TextBox Name="statisticBox" AcceptsReturn="True" HorizontalAlignment="Left" Height="77" Margin="0,354,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="806" />
+        <TextBox Name="statisticBox" AcceptsReturn="True" HorizontalAlignment="Left" Height="auto" MinHeight="77" Margin="0,354,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="806" />
 
     </Grid>
 </Window>
