@@ -23,6 +23,14 @@
                     <TextBox Name="textFromFile" HorizontalAlignment="Left" Height="245" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="800"/>
                 </Grid>
             </TabItem>
+        <TabItem Header="Huffman">
+            <Grid Background="#FFE5E5E5">
+                <!--<Label Content="Wczytywanie z pliku tekstowego" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <Button Content="Wybierz plik" HorizontalAlignment="Left" Margin="196,16,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>-->
+                <Button Content="Pokaż statystyki" HorizontalAlignment="Left" Margin="695,291,0,0" VerticalAlignment="Top" Width="95" Click="Button_Click_3"/>
+                <TextBox Name="textFromHuffman" HorizontalAlignment="Left" Height="245" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="800"/>
+            </Grid>
+        </TabItem>
         </TabControl>
         <TextBox Name="statisticBox" AcceptsReturn="True" HorizontalAlignment="Left" Height="auto" MinHeight="77" Margin="0,354,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="806" />
 

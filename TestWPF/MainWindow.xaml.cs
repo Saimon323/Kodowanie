@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using TestWPF.Models;
@@ -9,7 +11,7 @@ namespace TestWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -153,13 +155,13 @@ namespace TestWPF
         private Dictionary<string,int> CreateDictionary(string text)
         {
             Dictionary<string, int> charsDictionary = new Dictionary<string, int>();
-            List<StatisticModel> statisticList = new List<StatisticModel>();
+            //List<StatisticModel> statisticList = new List<StatisticModel>();
             
             int textLength = text.Length;
 
             for (int i = 0; i < textLength; i++)
             {
-                string currentChar = text[i].ToString();
+                string currentChar = text[i].ToString(CultureInfo.InvariantCulture);
                 bool isInDictionary = charsDictionary.ContainsKey(currentChar);
 
                 if (isInDictionary)
@@ -183,7 +185,7 @@ namespace TestWPF
 
             foreach (var dict in charsDictionary)
             {
-                double frequency = (double)dict.Value / (double)textLength;
+                double frequency = dict.Value / (double)textLength;
                 StatisticModel statistic = new StatisticModel
                 {
                     Character = dict.Key,
@@ -213,6 +215,30 @@ namespace TestWPF
             }
 
             return sum;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            string input = textFromHuffman.Text;
+            HuffmanTree huffmanTree = new HuffmanTree();
+
+            huffmanTree.Build(input);
+
+
+            BitArray encoded = huffmanTree.Encode(input);
+            int ii = 0;
+            string encodeResult = "";
+            foreach (bool bit in encoded)
+            {
+                encodeResult += (bit ? 1 : 0);
+                ii++;
+            }
+           
+            // Decode
+            string decodeResult = huffmanTree.Decode(encoded);
+
+
+            statisticBox.Text = "Encoded: " + encodeResult + "\n" + "Decoded: " + decodeResult + "\n";
         }
 
         
