@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using SharpLZW;
 using TestWPF.Models;
@@ -256,28 +257,55 @@ namespace TestWPF
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             statisticBox.Text = "";
-            string inputText = textFromLZW.Text;
+            string text = textFromLZW.Text;
 
-            string fileToCompress = "Test.txt";
             string encodedFile = "TestOutput.txt";
             string decodedFile = "TestDecodedOutput.txt";
 
             var ascii = new ANSI();
             ascii.WriteToFile();
           
+            //string text = File.ReadAllText(fileToCompress, System.Text.ASCIIEncoding.Default);
+            var encoder = new LZWEncoder();
+            byte[] b = encoder.EncodeToByteList(text);
+            File.WriteAllBytes(encodedFile, b);
+
+            var decoder = new LZWDecoder();
+           
+            byte[] bo = File.ReadAllBytes(encodedFile);
+            string decodedOutput = decoder.DecodeFromCodes(bo);
+            File.WriteAllText(decodedFile, decodedOutput, System.Text.Encoding.Default);
+
+            string byteText = "";
+            foreach (var i in b)
+            {
+                byteText += i;
+            }
+
+            statisticBox.Text = "zakodowany: \n" + byteText  + "\nodkodowany: \n" +
+                                decodedOutput;
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            string fileToCompress = "Test.txt";
+            string encodedFile = "TestOutput.txt";
+            string decodedFile = "TestDecodedOutput.txt";
+
+            var ascii = new ANSI();
+            ascii.WriteToFile();
+
             string text = File.ReadAllText(fileToCompress, System.Text.ASCIIEncoding.Default);
             var encoder = new LZWEncoder();
             byte[] b = encoder.EncodeToByteList(text);
             File.WriteAllBytes(encodedFile, b);
 
-            Console.WriteLine("File " + fileToCompress + " encoded to " + encodedFile);
-
-            Console.WriteLine("Start decoding " + encodedFile);
-
             var decoder = new LZWDecoder();
             byte[] bo = File.ReadAllBytes(encodedFile);
             string decodedOutput = decoder.DecodeFromCodes(bo);
             File.WriteAllText(decodedFile, decodedOutput, System.Text.Encoding.Default);
+
+            statisticBox.Text = "Wyniki w plikach txt we wskazanej lokalizacji";
         }
     }
 }
