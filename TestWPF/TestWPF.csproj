@@ -57,11 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="ANSI.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BitReader.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Huffman.cs" />
+    <Compile Include="LZWDecoder.cs" />
+    <Compile Include="LZWEncoder.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
