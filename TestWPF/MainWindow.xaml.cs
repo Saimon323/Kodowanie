@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using SharpLZW;
 using TestWPF.Models;
 
 namespace TestWPF
@@ -251,9 +253,31 @@ namespace TestWPF
             }
         }
 
-        
-        // dodać liczbę bitów porzebnych do zakodowania jednego znaku i dodać suma (prawdopodobieństw * ilość wystąpień każdego z osobna)
-        // wybrać 2 dowolne programy kompresujące, wybrać 3 pliki tekstowe bez polskich znaków (mały (pojedyncze litery), średniej wielkości (kB) i duży), wyznaczyć statystyki
-        // skompresować pliki wybranymi programami i porównać te kompresje z sytuacją idealną wynikającą z entropii
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            statisticBox.Text = "";
+            string inputText = textFromLZW.Text;
+
+            string fileToCompress = "Test.txt";
+            string encodedFile = "TestOutput.txt";
+            string decodedFile = "TestDecodedOutput.txt";
+
+            var ascii = new ANSI();
+            ascii.WriteToFile();
+          
+            string text = File.ReadAllText(fileToCompress, System.Text.ASCIIEncoding.Default);
+            var encoder = new LZWEncoder();
+            byte[] b = encoder.EncodeToByteList(text);
+            File.WriteAllBytes(encodedFile, b);
+
+            Console.WriteLine("File " + fileToCompress + " encoded to " + encodedFile);
+
+            Console.WriteLine("Start decoding " + encodedFile);
+
+            var decoder = new LZWDecoder();
+            byte[] bo = File.ReadAllBytes(encodedFile);
+            string decodedOutput = decoder.DecodeFromCodes(bo);
+            File.WriteAllText(decodedFile, decodedOutput, System.Text.Encoding.Default);
+        }
     }
 }
