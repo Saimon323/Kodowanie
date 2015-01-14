@@ -241,6 +241,16 @@ namespace TestWPF
             statisticBox.Text = "Encoded: " + encodeResult + "\n" + "Decoded: " + decodeResult + "\n";
         }
 
+        public void Huffmann2(List<StatisticModel> stat)
+        {
+            var list = new List<StatisticModel>();
+
+            foreach (var statisticModel in stat)
+            {
+                
+            }
+        }
+
         
         // dodać liczbę bitów porzebnych do zakodowania jednego znaku i dodać suma (prawdopodobieństw * ilość wystąpień każdego z osobna)
         // wybrać 2 dowolne programy kompresujące, wybrać 3 pliki tekstowe bez polskich znaków (mały (pojedyncze litery), średniej wielkości (kB) i duży), wyznaczyć statystyki

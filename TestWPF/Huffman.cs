@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Controls;
 
 namespace TestWPF
 {
@@ -26,7 +29,7 @@ namespace TestWPF
 
             if (Left != null)
             {
-                List<bool> leftPath = new List<bool>();
+                var leftPath = new List<bool>();
                 leftPath.AddRange(data);
                 leftPath.Add(false);
 
@@ -35,7 +38,7 @@ namespace TestWPF
 
             if (Right != null)
             {
-                List<bool> rightPath = new List<bool>();
+                var rightPath = new List<bool>();
                 rightPath.AddRange(data);
                 rightPath.Add(true);
                 right = Right.Traverse(symbol, rightPath);
@@ -57,14 +60,14 @@ namespace TestWPF
 
         public void Build(string source)
         {
-            for (int i = 0; i < source.Length; i++)
+            foreach (char t in source)
             {
-                if (!Frequencies.ContainsKey(source[i]))
+                if (!Frequencies.ContainsKey(t))
                 {
-                    Frequencies.Add(source[i], 0);
+                    Frequencies.Add(t, 0);
                 }
 
-                Frequencies[source[i]]++;
+                Frequencies[t]++;
             }
 
             foreach (KeyValuePair<char, int> symbol in Frequencies)
@@ -74,13 +77,13 @@ namespace TestWPF
 
             while (nodes.Count > 1)
             {
-                List<Node> orderedNodes = nodes.OrderBy(node => node.Frequency).ToList();
+                var orderedNodes = nodes.OrderBy(node => node.Frequency).ToList();
 
                 if (orderedNodes.Count >= 2)
                 {
-                    List<Node> taken = orderedNodes.Take(2).ToList();
+                    var taken = orderedNodes.Take(2).ToList();
 
-                    Node parent = new Node
+                    var parent = new Node
                     {
                         Symbol = '*',
                         Frequency = taken[0].Frequency + taken[1].Frequency,
@@ -100,7 +103,7 @@ namespace TestWPF
 
         public BitArray Encode(string source)
         {
-            List<bool> encodedSource = new List<bool>();
+            var encodedSource = new List<bool>();
 
             foreach (char c in source)
             {
@@ -108,7 +111,7 @@ namespace TestWPF
                 encodedSource.AddRange(encodedSymbol);
             }
 
-            BitArray bits = new BitArray(encodedSource.ToArray());
+            var bits = new BitArray(encodedSource.ToArray());
 
             return bits;
         }
@@ -149,8 +152,35 @@ namespace TestWPF
         {
             return (node.Left == null && node.Right == null);
         }
+
+//#region save_tree
+        
+//        public static void SaveTree(TreeView tree, string filename)
+//        {
+//            using (Stream file = File.Open(filename, FileMode.Create))
+//            {
+//                BinaryFormatter bf = new BinaryFormatter();
+//                bf.Serialize(file, tree.Nodes.Cast<TreeNode>().ToList());
+//            }
+//        }
+        
+//        public static void LoadTree(TreeView tree, string filename)
+//        {
+//            using (Stream file = File.Open(filename, FileMode.Open))
+//            {
+//                BinaryFormatter bf = new BinaryFormatter();
+//                object obj = bf.Deserialize(file);
+
+//                TreeNode[] nodeList = (obj as IEnumerable<TreeNode>).ToArray();
+//                tree.Nodes.AddRange(nodeList);
+//            }
+//        }
+
+//#endregion
     }
 }
+
+
 
 // statystyka H - jest związana z występującym plikiem, liczona jest entropia i wiadomo ile średnio można zakodować bitów/znak - najlepsze możliwe
 // ststystyka L - zwiazane jest ściśle z plikiem
