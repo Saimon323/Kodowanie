@@ -259,13 +259,12 @@ namespace TestWPF
             statisticBox.Text = "";
             string text = textFromLZW.Text;
 
-            string encodedFile = "TestOutput.txt";
-            string decodedFile = "TestDecodedOutput.txt";
+            string encodedFile = "EncodedFromWindow";
+            string decodedFile = "DecodedFromWindow";
 
             var ascii = new ANSI();
             ascii.WriteToFile();
           
-            //string text = File.ReadAllText(fileToCompress, System.Text.ASCIIEncoding.Default);
             var encoder = new LZWEncoder();
             byte[] b = encoder.EncodeToByteList(text);
             File.WriteAllBytes(encodedFile, b);
@@ -274,13 +273,14 @@ namespace TestWPF
            
             byte[] bo = File.ReadAllBytes(encodedFile);
             string decodedOutput = decoder.DecodeFromCodes(bo);
-            File.WriteAllText(decodedFile, decodedOutput, System.Text.Encoding.Default);
 
             string byteText = "";
             foreach (var i in b)
             {
                 byteText += i;
             }
+
+            File.WriteAllText(decodedFile, decodedOutput, System.Text.Encoding.Default);
 
             statisticBox.Text = "zakodowany: \n" + byteText  + "\nodkodowany: \n" +
                                 decodedOutput;
@@ -289,8 +289,8 @@ namespace TestWPF
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             string fileToCompress = "Test.txt";
-            string encodedFile = "TestOutput.txt";
-            string decodedFile = "TestDecodedOutput.txt";
+            string encodedFile = "Output.txt";
+            string decodedFile = "DecodedOutput.txt";
 
             var ascii = new ANSI();
             ascii.WriteToFile();

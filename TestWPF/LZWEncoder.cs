@@ -18,7 +18,7 @@ namespace SharpLZW
 
         public string EncodeToCodes(string input)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             int i = 0;
             string w = "";
